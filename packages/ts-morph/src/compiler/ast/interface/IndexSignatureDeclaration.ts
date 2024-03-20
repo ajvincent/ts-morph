@@ -7,6 +7,8 @@ import { callBaseGetStructure } from "../callBaseGetStructure";
 import { callBaseSet } from "../callBaseSet";
 import { TypeNode } from "../type";
 import { TypeElement } from "./TypeElement";
+import { WriterFunction } from "../../../types";
+import { getTextFromStringOrWriter } from "../../../utils";
 
 const createBase = <T extends typeof TypeElement>(ctor: T) =>
   ReturnTypedNode(ChildOrderableNode(JSDocableNode(
@@ -50,15 +52,15 @@ export class IndexSignatureDeclaration extends IndexSignatureDeclarationBase<ts.
 
   /**
    * Sets the key type.
-   * @param type - Type.
+   * @param textOrWriterFunction - Type.
    */
-  setKeyType(type: string) {
-    errors.throwIfWhitespaceOrNotString(type, "type");
-    const keyTypeNode = this.getKeyTypeNode();
-    if (keyTypeNode.getText() === type)
-      return this;
+  setKeyType(textOrWriterFunction: string | WriterFunction) {
+    const text = getTextFromStringOrWriter(this._getWriterWithQueuedChildIndentation(), textOrWriterFunction);
+    errors.throwIfWhitespaceOrNotString(text, "type");
 
-    keyTypeNode.replaceWithText(type, this._getWriterWithQueuedChildIndentation());
+    const keyTypeNode = this.getKeyTypeNode();
+    if (keyTypeNode.getText() !== text)
+      keyTypeNode.replaceWithText(textOrWriterFunction, this._getWriterWithQueuedChildIndentation());
 
     return this;
   }

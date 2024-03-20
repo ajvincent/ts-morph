@@ -6058,9 +6058,9 @@ export declare class IndexSignatureDeclaration extends IndexSignatureDeclaration
   getKeyType(): Type;
   /**
    * Sets the key type.
-   * @param type - Type.
+   * @param textOrWriterFunction - Type.
    */
-  setKeyType(type: string): this;
+  setKeyType(textOrWriterFunction: string | WriterFunction): this;
   /** Gets the key type node. */
   getKeyTypeNode(): TypeNode;
   /**
@@ -10493,7 +10493,7 @@ export interface IndexSignatureDeclarationStructure extends Structure, IndexSign
 
 interface IndexSignatureDeclarationSpecificStructure extends KindedStructure<StructureKind.IndexSignature> {
   keyName?: string;
-  keyType?: string;
+  keyType?: string | WriterFunction;
 }
 
 export interface InterfaceDeclarationStructure extends Structure, NamedNodeStructure, InterfaceDeclarationSpecificStructure, ExtendsClauseableNodeStructure, TypeParameteredNodeStructure, JSDocableNodeStructure, AmbientableNodeStructure, ExportableNodeStructure, TypeElementMemberedNodeStructure {
